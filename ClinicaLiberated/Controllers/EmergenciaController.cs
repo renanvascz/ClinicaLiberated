@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaLiberated.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
-    public class SaudeController : Controller
+    [ApiController]
+    public class EmergenciaController : Controller
     {
 
         [HttpGet("retornoCasa")]
@@ -30,12 +30,12 @@ namespace ClinicaLiberated.Controllers
             return listaPacientes;
         }
         [HttpGet("pacientes")]
-        public List<Paciente> ListaPaciente()
+        public List<PacienteModel> ListaPaciente()
         {
-            Paciente novoPaciente = new Paciente("1019210", "Giovanni", "10/04/1999", "Vermelha");
-            List<Paciente> listaPaciente = new List<Paciente>();
+            PacienteModel novoPaciente = new PacienteModel("1019210", "Giovanni", "10/04/1999", "Vermelha");
+            List<PacienteModel> listaPaciente = new List<PacienteModel>();
             listaPaciente.Add(novoPaciente);
-            novoPaciente = new Paciente("1020220", "Eduarda","15/03/1990","Verde");
+            novoPaciente = new PacienteModel("1020220", "Eduarda","15/03/1990","Verde");
             listaPaciente.Add(novoPaciente);
             return listaPaciente;
 
