@@ -8,6 +8,7 @@ namespace ClinicaLiberated.Controllers
     [ApiController]
     public class EmergenciaController : Controller
     {
+        public static List<PacienteModel> listaPaciente = new List<PacienteModel>();
 
         [HttpGet("retornoCasa")]
         public string casa()
@@ -25,7 +26,7 @@ namespace ClinicaLiberated.Controllers
         [HttpGet("listaPacientes")]
         public List<string> listaNome()
         {
-            List <string> listaPacientes = new List<string>();
+            List<string> listaPacientes = new List<string>();
             listaPacientes = ["Giovanni", "Carlos", "Pedro"];
             return listaPacientes;
         }
@@ -33,12 +34,44 @@ namespace ClinicaLiberated.Controllers
         public List<PacienteModel> ListaPaciente()
         {
             PacienteModel novoPaciente = new PacienteModel("1019210", "Giovanni", "10/04/1999", "Vermelha");
-            List<PacienteModel> listaPaciente = new List<PacienteModel>();
             listaPaciente.Add(novoPaciente);
-            novoPaciente = new PacienteModel("1020220", "Eduarda","15/03/1990","Verde");
+            novoPaciente = new PacienteModel("1020220", "Eduarda", "15/03/1990", "Verde");
             listaPaciente.Add(novoPaciente);
             return listaPaciente;
 
+        }
+        [HttpGet("buscaPaciente/{id}")]
+        public PacienteModel? buscarPaciente(string id)
+        {
+            foreach(var paciente in listaPaciente)
+            {
+                if (paciente.cpf == id)
+                {
+                    return paciente;
+                }
+            }
+            return null;
+        }
+
+        [HttpPut("editarPaciente/{id}")]
+        public string editarPaciente([FromBody] PacienteModel pacienteEditado, string id)
+        {
+            foreach (var paciente in listaPaciente)
+            {
+                if (paciente.cpf==id)
+                {
+                    paciente.cpf = pacienteEditado.cpf;
+                    paciente.nomeCompleto = pacienteEditado.nomeCompleto;
+                    paciente.telefone = pacienteEditado.telefone;
+                    paciente.email = pacienteEditado.email;
+                    paciente.prioridade = pacienteEditado.prioridade;
+                    paciente.dataNascimento = pacienteEditado.dataNascimento;
+                    paciente.endereco = pacienteEditado.endereco;
+                    return $"Paciente {paciente.nomeCompleto}, cpf anterior: {id} editado com sucesso";
+
+                }
+            }
+            return "Paciente não encontrado.";
         }
 
     }
