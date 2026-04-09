@@ -74,5 +74,19 @@ namespace ClinicaLiberated.Controllers
             return "Paciente não encontrado.";
         }
 
+        [HttpDelete("deletarPaciente/{id}")]
+        public string? deletarPaciente(string id)
+        {
+            foreach (var paciente in listaPaciente)
+            {
+                if (paciente.cpf == id)
+                {
+                    listaPaciente.Remove(paciente);
+                    return $"Paciente: {id} deletado com sucesso";
+                }
+            }
+            return "Paciente não encontrado";
+        }
+
     }
 }

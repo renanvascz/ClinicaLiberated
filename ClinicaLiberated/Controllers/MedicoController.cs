@@ -12,12 +12,24 @@ namespace ClinicaLiberated.Controllers
 
         public static List<MedicoModel> listaMedicos = new List<MedicoModel>();
         [HttpPost("cadastroMedico")]
-        public string cadastroMedico([FromBody] string nomeMedico)
+        public string cadastroMedico([FromBody] MedicoModel medico)
         {
-            MedicoModel medicoCadastro = new MedicoModel();
-            medicoCadastro.nome = nomeMedico;
-            listaMedicos.Add(medicoCadastro);
-            return $"Dr. {nomeMedico} Cadastro com sucesso";
+            listaMedicos.Add(medico);
+            return $"Dr. {medico.nomeCompleto} cadastrado com sucesso";
         }
+
+        //listar os médicos
+        [HttpGet("listaMedicos")]
+        public List<MedicoModel>listarMedicos()
+        {
+            return listaMedicos;          
+        }
+
+        //editar médico
+
+
+        //buscar médico
+
+        //excluir médico
     }
 }

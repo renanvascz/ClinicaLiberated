@@ -2,7 +2,12 @@
 {
     public class MedicoModel
     {
-        public string? nome { get; set; }
+        public string? nomeCompleto { get; set; }
+        public string? crm { get; set; }
+        public string? email { get; set; }
+        public string? telefone { get; set; }
+        public string? dataNascimento { get; set; }
+
 
     }
 }
