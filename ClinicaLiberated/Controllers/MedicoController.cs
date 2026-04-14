@@ -1,4 +1,5 @@
 ﻿using ClinicaLiberated.Models;
+using ClinicaLiberated.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace ClinicaLiberated.Controllers
     {
 
         public static List<MedicoModel> listaMedicos = new List<MedicoModel>();
-        private IEnumerable<object> listaMedico;
+        private IEnumerable<object>? listaMedico;
 
         [HttpPost("cadastroMedico")]
         public string cadastroMedico([FromBody] MedicoModel medico)
@@ -30,23 +31,21 @@ namespace ClinicaLiberated.Controllers
         //editar médico
         //public List<MedicoModel>
 
-        [HttpPut("editarMedico/{id}")]
-        public string editarMedico([FromBody] MedicoModel medicoEditado, string id)
+        [HttpPut("editarMedico/{crm}")]
+        public string editarMedico([FromBody] MedicoModel medicoEditado, string crm)
         {
-            foreach (var medico in listaMedicos)
+            MedicoService medico = new MedicoService();
+            medico.editarMedico(medicoEditado, crm);
             {
-                if (medico.crm == id)
+                if (medico == null)
                 {
-                    medico.crm = medicoEditado.crm;
-                    medico.nomeCompleto = medicoEditado.nomeCompleto;
-                    medico.telefone = medicoEditado.telefone;
-                    medico.email = medicoEditado.email;
-                    medico.dataNascimento = medicoEditado.dataNascimento;
-                    return $"Medico {medico.nomeCompleto}, crm anterior: {id} editado com sucesso";
-
+                    return "Médico não encontrado";
                 }
-            }
-            return "Paciente não encontrado.";
+                else
+                {
+                    return $"Médico de CRM N° {crm} editado com sucesso";
+                }
+            }    
         }
 
 
