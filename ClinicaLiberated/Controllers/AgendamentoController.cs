@@ -15,7 +15,16 @@ namespace ClinicaLiberated.Controllers
         {
             try
             {
-                
+                AgendamentoModel agendamento = new AgendamentoModel();
+                agendamento.nomePaciente = dadosAgendamento.paciente?.nomeCompleto;
+                agendamento.telefonePaciente = dadosAgendamento.paciente?.telefone;
+                agendamento.cpfPaciente = dadosAgendamento.paciente?.cpf;
+                agendamento.nomeMedico = dadosAgendamento.medico?.nomeCompleto;
+                agendamento.crmMedico = dadosAgendamento.medico?.crm;
+                agendamento.especialidadeMedico = dadosAgendamento.medico?.especialidade;                
+                agendamento.dataHoraAgendamento = dadosAgendamento.dataHoraAgendamento;
+
+                listaDeAgendamentos.Add(agendamento);
                 return Created();
 
             }
