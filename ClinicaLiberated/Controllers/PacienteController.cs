@@ -6,40 +6,31 @@ namespace ClinicaLiberated.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class EmergenciaController : Controller
+    public class PacienteController : Controller
     {
         public static List<PacienteModel> listaPaciente = new List<PacienteModel>();
 
-        [HttpGet("retornoCasa")]
-        public string casa()
+        [HttpPost("CadastrarPaciente")]
+        public async Task<IActionResult> CadastrarPaciente([FromBody] PacienteModel pacienteCadastrado)
         {
-            return "casa";
+            try
+            {
+                listaPaciente.Add(pacienteCadastrado);
+                return Created();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro Inesperado: " + ex.Message);
+            }
         }
 
-        [HttpGet("nomePaciente")]
 
-        public string paciente()
-        {
-            string nome = "Giovanni";
-            return "Paciente: " + nome;
-        }
         [HttpGet("listaPacientes")]
-        public List<string> listaNome()
+        public List<PacienteModel> listarPaciente()
         {
-            List<string> listaPacientes = new List<string>();
-            listaPacientes = ["Giovanni", "Carlos", "Pedro"];
-            return listaPacientes;
-        }
-        [HttpGet("pacientes")]
-        public List<PacienteModel> ListaPaciente()
-        {
-            PacienteModel novoPaciente = new PacienteModel("1019210", "Giovanni", "10/04/1999", "Vermelha");
-            listaPaciente.Add(novoPaciente);
-            novoPaciente = new PacienteModel("1020220", "Eduarda", "15/03/1990", "Verde");
-            listaPaciente.Add(novoPaciente);
             return listaPaciente;
-
         }
+
         [HttpGet("buscaPaciente/{id}")]
         public PacienteModel? buscarPaciente(string id)
         {
