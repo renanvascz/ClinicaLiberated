@@ -1,4 +1,7 @@
 
+using ClinicaLiberated.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace ClinicaLiberated
 {
     public class Program
@@ -8,6 +11,9 @@ namespace ClinicaLiberated
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddDbContext<ClinicaContext>(options =>
+                options.UseMySql(builder.Configuration.GetConnectionString("ConexaoPadrao"),
+                new MySqlServerVersion(new Version(8, 0, 23))));
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -32,6 +38,8 @@ namespace ClinicaLiberated
             app.MapControllers();
 
             app.Run();
+
+           // Add services to the container
         }
     }
 }

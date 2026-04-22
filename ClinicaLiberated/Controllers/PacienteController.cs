@@ -55,7 +55,6 @@ namespace ClinicaLiberated.Controllers
                     paciente.nomeCompleto = pacienteEditado.nomeCompleto;
                     paciente.telefone = pacienteEditado.telefone;
                     paciente.email = pacienteEditado.email;
-                    paciente.prioridade = pacienteEditado.prioridade;
                     paciente.dataNascimento = pacienteEditado.dataNascimento;
                     paciente.endereco = pacienteEditado.endereco;
                     return $"Paciente {paciente.nomeCompleto}, cpf anterior: {id} editado com sucesso";
