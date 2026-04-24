@@ -21,7 +21,7 @@ namespace ClinicaLiberated.Controllers
                 agendamento.cpfPaciente = dadosAgendamento.paciente?.cpf;
                 agendamento.nomeMedico = dadosAgendamento.medico?.nomeCompleto;
                 agendamento.crmMedico = dadosAgendamento.medico?.crm;
-                agendamento.especialidadeMedico = dadosAgendamento.medico?.especialidade;
+                agendamento.especialidadeMedico = dadosAgendamento.medico?.especialidade;            
                 agendamento.dataHoraAgendamento = dadosAgendamento.dataHoraAgendamento;
 
                 listaDeAgendamentos.Add(agendamento);

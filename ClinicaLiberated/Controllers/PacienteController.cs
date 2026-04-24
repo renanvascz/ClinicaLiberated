@@ -1,4 +1,5 @@
-﻿using ClinicaLiberated.Models;
+﻿using ClinicaLiberated.Data;
+using ClinicaLiberated.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +11,20 @@ namespace ClinicaLiberated.Controllers
     {
         public static List<PacienteModel> listaPaciente = new List<PacienteModel>();
 
+        private ClinicaContext _context;
+
+        public PacienteController(ClinicaContext context) 
+        { 
+            _context = context;
+        }
+
         [HttpPost("CadastrarPaciente")]
         public async Task<IActionResult> CadastrarPaciente([FromBody] PacienteModel pacienteCadastrado)
         {
             try
-            {
-                listaPaciente.Add(pacienteCadastrado);
+            {   
+                _context.Add(pacienteCadastrado);
+                _context.SaveChanges();
                 return Created();
             }
             catch (Exception ex)
@@ -31,51 +40,59 @@ namespace ClinicaLiberated.Controllers
             return listaPaciente;
         }
 
-        [HttpGet("buscaPaciente/{id}")]
-        public PacienteModel? buscarPaciente(string id)
+        [HttpGet("buscaPaciente/{cpf}")]
+        public async Task<IActionResult> buscarPaciente(string cpf)     
         {
-            foreach(var paciente in listaPaciente)
+            try
             {
-                if (paciente.cpf == id)
-                {
-                    return paciente;
-                }
+                PacienteModel? pacienteEncontrado = await _context.Pacientes.FindAsync(cpf);
+                return Ok(pacienteEncontrado);
             }
-            return null;
+            catch (Exception ex)
+            { 
+                return BadRequest(ex.Message);
+            }
+
         }
 
-        [HttpPut("editarPaciente/{id}")]
-        public string editarPaciente([FromBody] PacienteModel pacienteEditado, string id)
+        [HttpPut("editarPaciente/{cpf}")]
+        public async Task<IActionResult> editarPaciente([FromBody] PacienteModel pacienteEditado, string cpf)
         {
-            foreach (var paciente in listaPaciente)
+            try
             {
-                if (paciente.cpf==id)
-                {
-                    paciente.cpf = pacienteEditado.cpf;
-                    paciente.nomeCompleto = pacienteEditado.nomeCompleto;
-                    paciente.telefone = pacienteEditado.telefone;
-                    paciente.email = pacienteEditado.email;
-                    paciente.dataNascimento = pacienteEditado.dataNascimento;
-                    paciente.endereco = pacienteEditado.endereco;
-                    return $"Paciente {paciente.nomeCompleto}, cpf anterior: {id} editado com sucesso";
-
-                }
+                _context.Pacientes.Update(pacienteEditado);
+                await _context.SaveChangesAsync();
+                return Ok(pacienteEditado);
             }
-            return "Paciente não encontrado.";
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpDelete("deletarPaciente/{id}")]
-        public string? deletarPaciente(string id)
+        [HttpDelete("deletarPaciente/{cpf}")]
+        public async Task<ActionResult> deletarPaciente(string cpf)
         {
-            foreach (var paciente in listaPaciente)
+            try
             {
-                if (paciente.cpf == id)
+                PacienteModel? pacienteEncontrado = await _context.Pacientes.FindAsync(cpf);
+
+                if (pacienteEncontrado != null)
                 {
-                    listaPaciente.Remove(paciente);
-                    return $"Paciente: {id} deletado com sucesso";
+                    _context.Pacientes.Remove(pacienteEncontrado);
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                else
+                {
+                    throw new Exception($"Paciente de CPF: {cpf} não existe");
                 }
             }
-            return "Paciente não encontrado";
+            catch (Exception ex)
+            {
+                return BadRequest("Erro. " + ex.Message);
+            }
+     
         }
 
     }
