@@ -2,6 +2,7 @@
 using ClinicaLiberated.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaLiberated.Controllers
 {
@@ -35,9 +36,17 @@ namespace ClinicaLiberated.Controllers
 
 
         [HttpGet("listaPacientes")]
-        public List<PacienteModel> listarPaciente()
+        public async Task<IActionResult> listarPaciente()
         {
-            return listaPaciente;
+            try
+            {
+                var listaPacientes = await _context.Pacientes.ToListAsync();
+                return Ok(listaPacientes);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro. " + ex.Message);
+            }
         }
 
         [HttpGet("buscaPaciente/{cpf}")]
@@ -55,7 +64,22 @@ namespace ClinicaLiberated.Controllers
 
         }
 
-        [HttpPut("editarPaciente/{cpf}")]
+        [HttpGet("buscarPaciente/{nomeCompleto}")]
+        public async Task<IActionResult> BuscarPaciente(string nomeCompleto)
+        {
+            try
+            {
+                var listaBuscaPaciente = await _context.Pacientes.Where(p => p.nomeCompleto.Contains(nomeCompleto)).ToListAsync();
+                return Ok(listaBuscaPaciente);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Erro. " + ex.Message);
+            }     
+
+        }
+
+            [HttpPut("editarPaciente/{cpf}")]
         public async Task<IActionResult> editarPaciente([FromBody] PacienteModel pacienteEditado, string cpf)
         {
             try

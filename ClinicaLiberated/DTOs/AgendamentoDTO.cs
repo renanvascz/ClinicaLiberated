@@ -3,9 +3,10 @@
 namespace ClinicaLiberated.DTOs
 {
     public class AgendamentoDTO
-    {
-        public PacienteModel? paciente { get; set; }
-        public MedicoModel? medico { get; set; }
-        public DateTime dataHoraAgendamento {  get; set; }
+    {   
+        public string? id { get; set; }
+        public string? cpfPaciente { get; set; }
+        public string? crmMedico { get; set; }
+        public DateTime dataHoraAgendada {  get; set; }
     }
 }

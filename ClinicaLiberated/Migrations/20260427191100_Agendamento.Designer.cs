@@ -3,6 +3,7 @@ using System;
 using ClinicaLiberated.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaLiberated.Migrations
 {
     [DbContext(typeof(ClinicaContext))]
-    partial class ClinicaContextModelSnapshot : ModelSnapshot
+    [Migration("20260427191100_Agendamento")]
+    partial class Agendamento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
